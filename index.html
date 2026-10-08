@@ -10,6 +10,7 @@
     
 
     <style>
+        
         * {
             margin: 0;
             padding: 0;
@@ -72,14 +73,15 @@
     flex-direction: column;
     justify-content: flex-start;
    background: none;
-overflow: hidden;
+overflow: visible;
     color: white;
         z-index: 1;
 
-}
-.hero-fondo {
+}.hero-fondo {
     position: absolute;
     inset: 0;
+    width: 100%;
+height: 100%;
     background:
         linear-gradient(
             to bottom,
@@ -91,7 +93,6 @@ overflow: hidden;
     transform: scale(1);
     transform-origin: center center;
 }
-
         .hero small {
             letter-spacing: 4px;
             font-size: 11px;
@@ -167,7 +168,7 @@ font-family: "Playfair Display", serif;    font-size: 43px;
        .categories {
     position: relative;
     z-index: 2;
-    background: rgba(247, 243, 237, 0.85);
+    background: rgba(247, 243, 237, 0.55);
     margin-top: 0;
     padding: 50px 20px;
     border-radius: 28px 28px 0 0;
@@ -196,6 +197,25 @@ font-family: "Playfair Display", serif;    font-size: 43px;
     overflow: hidden;
     position: relative;
 
+} .category {
+    opacity: 0;
+    transform: translateY(35px);
+}
+
+.category.aparecer {
+    animation: aparecerCategoria 0.7s ease forwards;
+}
+
+@keyframes aparecerCategoria {
+    from {
+        opacity: 0;
+        transform: translateY(35px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
    .category.futbol {
     background-image: url("futbol.jpg");
@@ -205,7 +225,7 @@ font-family: "Playfair Display", serif;    font-size: 43px;
 }  .category.casamientos {
     background-image: url("casamiento.jpg");
     background-size: cover;
-    background-position: center;
+    background-position: center 80%;
 }.category.casamientos::after {
     content: "";
     position: absolute;
@@ -224,7 +244,7 @@ font-family: "Playfair Display", serif;    font-size: 43px;
 .category.bautismos {
     background-image: url("bautismo.jpg");
     background-size: cover;
-    background-position: center;
+    background-position: center 30%;
 }
 .category.bautismos::after {
     content: "";
@@ -370,8 +390,8 @@ font-family: "Playfair Display", serif;    font-size: 43px;
     inset: 0;
     background:
     linear-gradient(
-        rgba(0, 0, 0, 0.78),
-        rgba(0, 0, 0, 0.78)
+        rgba(0, 0, 0, 0.72),
+        rgba(0, 0, 0, 0.72)
     ),
     url("fotografo.jpg") 57% 20% / cover no-repeat;
     z-index: 100;
@@ -387,7 +407,52 @@ font-family: "Playfair Display", serif;    font-size: 43px;
         opacity 0.15s ease,
         visibility 0s linear 0.6s;
         pointer-events: auto !important;
+}..flash-camara {
+    position: fixed;
+    inset: 0;
+    background: white;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
 }
+
+.flash-camara.disparar {
+    animation: flashCamara 0.45s ease-out;
+}
+
+@keyframes flashCamara {
+    0% {
+        opacity: 0;
+    }
+
+    12% {
+        opacity: 0.9;
+    }
+
+    22% {
+        opacity: 0.15;
+    }
+
+    35% {
+        opacity: 0.65;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.menu-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+    animation: destelloRayo 0.35s ease 1.5s forwards;
+}
+
 .menu-overlay.active {
     opacity: 1;
     visibility: visible;
@@ -476,9 +541,17 @@ font-family: "Playfair Display", serif;    font-size: 43px;
     margin-top: auto;
     margin-bottom: 30px;
 }.sobre-franco {
-    background: #f7f3ed;
+    background:
+    radial-gradient(rgba(0,0,0,0.045) 1px, transparent 1px),
+    #f7f3ed;
+background-size: 5px 5px;
     padding: 0;
-    color: #171717;
+    color: #171717;.sobre-franco {
+    opacity: 0;
+    transform: translateY(35px);
+}
+
+
 }
 
 .sobre-imagen {
@@ -491,7 +564,7 @@ font-family: "Playfair Display", serif;    font-size: 43px;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 47% center;
+    object-position: 46% center;
     display: block;
     filter: brightness(0.85);
     
@@ -510,14 +583,16 @@ font-family: "Playfair Display", serif;    font-size: 43px;
 
 .sobre-contenido h2 {
     font-family: "Playfair Display", serif;
-    font-size: 42px;
-    line-height: 0.95;
+    font-size: 44px;
+line-height: 1;
+letter-spacing: 1px;
     font-weight: 400;
     margin: 0 0 30px;
 }
 
 .sobre-texto {
-    font-family: Arial, sans-serif;
+    font-family: "Lato", sans-serif;
+font-weight: 300;
     font-size: 15px;
     line-height: 1.7;
     max-width: 500px;
@@ -563,14 +638,14 @@ font-family: "Playfair Display", serif;    font-size: 43px;
     .sobre-contenido {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         padding: 80px;
     }
 
 }.sobre-franco {
     display: grid;
-    grid-template-columns: 44% 56%;
-    min-height: 620px;
+   grid-template-columns: 50% 52%;
+    min-height: 100vh;
 }
 
 .sobre-imagen {
@@ -579,20 +654,21 @@ font-family: "Playfair Display", serif;    font-size: 43px;
 }
 
 .sobre-contenido {
-    padding: 35px 20px;
+    padding: 25px 30px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .sobre-contenido h2 {
-    font-size: 28px;
+    font-size: 35px;
     line-height: 0.95;
 }
 
 .sobre-texto {
-    font-family: Arial, sans-serif;
-    font-size: 12px;
+    font-family: "Lato", sans-serif;
+font-weight: 300;
+    font-size: 15px;
     line-height: 1.65;
     max-width: 95%;
     margin-bottom: 25px;
@@ -613,7 +689,7 @@ font-family: "Playfair Display", serif;    font-size: 43px;
     position: fixed;
     inset: 0;
     background: #171717;
-    z-index: 200;
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -627,18 +703,134 @@ font-family: "Playfair Display", serif;    font-size: 43px;
     visibility: visible;
 }
 
+.galeria-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
 .galeria-contenido {
-    width: 85%;
-    height: 85%;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    perspective: 1800px;
+    position: relative;
 }
 
-.galeria-contenido img {
-    max-width: 100%;
-    max-height: 100%;
+.album-contenido {
+    position: relative;
+}
+
+.pagina-album {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+}
+
+.pagina-album img {
+    width: auto;
+    height: auto;
+    max-width: 95vw;
+    max-height: 90vh;
     object-fit: contain;
+    display: block;
+}
+
+.pagina-atras {
+    z-index: 1;
+    visibility: hidden;
+}
+
+.pagina-frente {
+    z-index: 2;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    transition: opacity 0.18s ease;
+}
+.pagina-frente.pasar-pagina-izquierda {
+    animation: abrirPaginaIzquierda 0.8s ease-in-out forwards;
+}
+
+.pagina-frente.pasar-pagina-derecha {
+    animation: abrirPaginaDerecha 0.8s ease-in-out forwards;
+}
+
+@keyframes abrirPaginaIzquierda {
+    0% {
+        transform: rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateY(-180deg);
+    }
+}
+
+@keyframes abrirPaginaDerecha {
+    0% {
+        transform: rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateY(180deg);
+    }
+}
+
+.galeria-contenido img.pasar-izquierda {
+    animation: pasarHojaIzquierda 0.7s ease-in-out;
+}
+
+.galeria-contenido img.pasar-derecha {
+    animation: pasarHojaDerecha 0.7s ease-in-out;
+}
+
+@keyframes pasarHojaIzquierda {
+    0% {
+        transform: perspective(1600px) rotateY(0deg) translateX(0);
+        opacity: 1;
+    }
+
+    35% {
+        transform: perspective(1600px) rotateY(-35deg) translateX(-3%);
+        opacity: 0.9;
+    }
+
+    65% {
+        transform: perspective(1600px) rotateY(-70deg) translateX(-12%);
+        opacity: 0.35;
+    }
+
+    100% {
+        transform: perspective(1600px) rotateY(0deg) translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pasarHojaDerecha {
+    0% {
+        transform: perspective(1600px) rotateY(0deg) translateX(0);
+        opacity: 1;
+    }
+
+    35% {
+        transform: perspective(1600px) rotateY(35deg) translateX(3%);
+        opacity: 0.9;
+    }
+
+    65% {
+        transform: perspective(1600px) rotateY(70deg) translateX(12%);
+        opacity: 0.35;
+    }
+
+    100% {
+        transform: perspective(1600px) rotateY(0deg) translateX(0);
+        opacity: 1;
+    }
 }
 
 .galeria-cerrar,
@@ -790,6 +982,55 @@ font-family: "Playfair Display", serif;    font-size: 43px;
     overflow: hidden;
     pointer-events: none !important;
 }
+.rayos-menu {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.rayo-menu {
+    position: absolute;
+    width: 6px;
+height: 50px;
+    background: rgba(255, 255, 255, 0.8);
+    clip-path: polygon(
+        55% 0%,
+        100% 0%,
+        63% 38%,
+        92% 38%,
+        20% 100%,
+        40% 55%,
+        8% 55%
+    );
+    opacity: 0;
+    filter: blur(0.2px);
+    animation: destelloRayo 0.35s ease-out forwards;
+    transform: rotate(40%);
+}
+
+@keyframes destelloRayo {
+    0% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.8;
+    }
+
+    35% {
+        opacity: 0.15;
+    }
+
+    50% {
+        opacity: 0.65;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
 
 .gota {
     position: absolute;
@@ -872,15 +1113,17 @@ font-family: "Playfair Display", serif;    font-size: 43px;
 </header>
 
 <nav class="menu-overlay" id="menuOverlay">
+   
     <div class="menu-linea"></div>
     <div class="lluvia-menu"></div>
+    <div class="rayos-menu"></div>
     <div class="menu-close">×</div>
 
     <a href="#trabajos">PORTFOLIO</a>
 <a href="#sobre-franco">SOBRE FRANCO</a>
 <a href="#contacto">CONTACTO</a>
 </nav>
-
+<div class="flash-camara" id="flashCamara"></div>
 
 
     <section class="hero">
@@ -946,6 +1189,27 @@ font-family: "Playfair Display", serif;    font-size: 43px;
     <button class="galeria-siguiente" id="siguienteFutbol">›</button>
 
 </div>
+<div class="galeria-overlay" id="galeriaCasamiento">
+
+    <button class="galeria-cerrar" id="cerrarCasamiento">×</button>
+
+    <button class="galeria-anterior" id="anteriorCasamiento">‹</button>
+
+    <div class="galeria-contenido album-contenido">
+
+    <div class="pagina-album pagina-atras">
+        <img id="fotoCasamientoAtras" src="" alt="">
+    </div>
+
+    <div class="pagina-album pagina-frente">
+        <img id="fotoCasamiento" src="" alt="Fotografía de casamiento">
+    </div>
+
+</div>
+
+    <button class="galeria-siguiente" id="siguienteCasamiento">›</button>
+
+</div>
     <section class="sobre-franco" id="sobre-franco">
         
 
@@ -960,7 +1224,7 @@ font-family: "Playfair Display", serif;    font-size: 43px;
         <h2>FOTOGRAFÍA<br>DESDE 2016</h2>
 
         <p class="sobre-texto">
-            Franco Nahuel Ziella comenzó su camino en la fotografía en 2016,
+            Franco Ziella comenzó su camino en la fotografía en 2016,
             después de conocer a un fotógrafo durante un cumpleaños de 15.
             Con los años, la fotografía se convirtió en una forma de mirar
             y contar historias desde su propia perspectiva.
@@ -974,7 +1238,7 @@ font-family: "Playfair Display", serif;    font-size: 43px;
         </p>
 
         <p class="sobre-firma">
-            NATURAL · GENUINO · ESPONTÁNEO
+            ESPONTÁNEO · GENUINO · NATURAL
         </p>
 
         
@@ -1017,16 +1281,30 @@ const menuLinks = document.querySelectorAll(".menu-overlay a");
 menuButton.addEventListener("click", function() {
     menuOverlay.classList.add("active");
 });
-
 menuClose.addEventListener("click", function() {
     menuOverlay.classList.remove("active");
 });
 
+const flashCamara = document.getElementById("flashCamara");
+
 menuLinks.forEach(function(link) {
     link.addEventListener("click", function() {
         menuOverlay.classList.remove("active");
+const sobreFranco = document.getElementById("sobre-franco");
+
+const posicion = sobreFranco.getBoundingClientRect().top + window.scrollY;
+
+window.scrollTo({
+    top: posicion,
+    behavior: "smooth"
+});
+
+flashCamara.classList.remove("disparar");
+void flashCamara.offsetWidth;
+flashCamara.classList.add("disparar");
     });
-});const fotosFutbol = [
+});
+;const fotosFutbol = [
     "Futbol/JON00038.jpg",
     "Futbol/JON00096.jpg",
     "Futbol/JON00136.jpg",
@@ -1038,6 +1316,17 @@ menuLinks.forEach(function(link) {
     "Futbol/JON09249.jpg",
     "Futbol/JON09518.jpg",
     "Futbol/JON09945.jpg"
+];
+const fotosCasamiento = [
+    "Casamiento/CASAMIENTO01.jpg.jfif",
+    "Casamiento/CASAMIENTO02.jpg.jfif",
+    "Casamiento/CASAMIENTO03.jpg.jfif",
+    "Casamiento/CASAMIENTO04.jpg.jfif",
+    "Casamiento/CASAMIENTO05.jpg.jfif",
+    "Casamiento/CASAMIENTO06.jpg.jfif",
+    "Casamiento/CASAMIENTO07.jpg.jfif",
+    "Casamiento/CASAMIENTO08.jpg.jfif"
+    
 ];
 
 const galeriaFutbol = document.getElementById("galeriaFutbol");
@@ -1071,6 +1360,58 @@ siguienteFutbol.addEventListener("click", function() {
     }
 
     mostrarFotoFutbol();
+}); const galeriaCasamiento = document.getElementById("galeriaCasamiento");
+const fotoCasamiento = document.getElementById("fotoCasamiento");
+const fotoCasamientoAtras = document.getElementById("fotoCasamientoAtras");
+const abrirCasamiento = document.querySelector(".category.casamientos span");
+const cerrarCasamiento = document.getElementById("cerrarCasamiento");
+const anteriorCasamiento = document.getElementById("anteriorCasamiento");
+const siguienteCasamiento = document.getElementById("siguienteCasamiento");
+
+let indiceCasamiento = 0;
+
+function mostrarFotoCasamiento() {
+    fotoCasamiento.style.opacity = "0";
+    
+
+    fotoCasamiento.src = fotosCasamiento[indiceCasamiento];
+
+    requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+            fotoCasamiento.style.opacity = "1";
+            
+        });
+    });
+}
+
+abrirCasamiento.addEventListener("click", function() {
+    indiceCasamiento = 0;
+    mostrarFotoCasamiento();
+    galeriaCasamiento.classList.add("active");
+});
+
+cerrarCasamiento.addEventListener("click", function() {
+    galeriaCasamiento.classList.remove("active");
+});
+
+siguienteCasamiento.addEventListener("click", function() {
+    indiceCasamiento++;
+
+    if (indiceCasamiento >= fotosCasamiento.length) {
+        indiceCasamiento = 0;
+    }
+
+    mostrarFotoCasamiento();
+});
+
+anteriorCasamiento.addEventListener("click", function() {
+    indiceCasamiento--;
+
+    if (indiceCasamiento < 0) {
+        indiceCasamiento = fotosCasamiento.length - 1;
+    }
+
+    mostrarFotoCasamiento("pasar-derecha");
 });
 
 anteriorFutbol.addEventListener("click", function() {
@@ -1081,7 +1422,55 @@ anteriorFutbol.addEventListener("click", function() {
     }
 
     mostrarFotoFutbol();
+});document.querySelector('.button[href="#trabajos"]').addEventListener("click", function(e) {
+    e.preventDefault();
+
+    const trabajos = document.getElementById("trabajos");
+
+    const inicio = window.scrollY;
+    const destino = trabajos.getBoundingClientRect().top + window.scrollY;
+    const distancia = destino - inicio;
+
+    const duracion = 1400;
+    const tiempoInicio = performance.now();
+
+    function desplazamientoSuave(tiempoActual) {
+        const progreso = Math.min((tiempoActual - tiempoInicio) / duracion, 1);
+
+        const suavizado = progreso < 0.5
+            ? 2 * progreso * progreso
+            : 1 - Math.pow(-2 * progreso + 2, 2) / 2;
+
+        window.scrollTo(0, inicio + distancia * suavizado);
+
+        if (progreso < 1) {
+            requestAnimationFrame(desplazamientoSuave);
+        }
+    }
+
+    requestAnimationFrame(desplazamientoSuave);
+});const categoriasPortfolio = document.querySelectorAll(".category");
+
+const observadorPortfolio = new IntersectionObserver(function(entradas) {
+    if (entradas[0].isIntersecting) {
+
+        categoriasPortfolio.forEach(function(categoria, indice) {
+            setTimeout(function() {
+                categoria.classList.add("aparecer");
+            }, indice * 150);
+        });
+
+        observadorPortfolio.disconnect();
+    }
+}, {
+    threshold: 0.2
 });
+
+const trabajosPortfolio = document.getElementById("trabajos");
+
+if (trabajosPortfolio) {
+    observadorPortfolio.observe(trabajosPortfolio);
+}
 </script>
 
 <script>
@@ -1105,31 +1494,13 @@ window.addEventListener("scroll", moverFoto);
 moverFoto();
 </script>
 <script>
-const categories = document.querySelector(".categories");
-const heroSeccion = document.querySelector(".hero");
 
-function moverPortfolio() {
-    const alturaHero = heroSeccion.offsetHeight;
-
-    const progreso = Math.min(
-        window.scrollY / alturaHero,
-        1
-    );
-
-    const movimiento = -alturaHero * 0.95 * progreso;
-
-    categories.style.transform =
-        `translateY(${movimiento}px)`;
-}
-
-window.addEventListener("scroll", moverPortfolio);
-moverPortfolio();
 
 </script>
 <script>
 const lluviaMenu = document.querySelector(".lluvia-menu");
 
-for (let i = 0; i < 150; i++) {
+for (let i = 0; i < 150; i++)  {
     const gota = document.createElement("span");
 
     gota.className = "gota";
@@ -1143,7 +1514,28 @@ for (let i = 0; i < 150; i++) {
     gota.style.height = (6 + Math.random() * 10) + "px";
 
     lluviaMenu.appendChild(gota);
+} const rayosMenu = document.querySelector(".rayos-menu");
+
+function crearRayo() {
+    const rayo = document.createElement("span");
+
+    rayo.className = "rayo-menu";
+
+    rayo.style.left = (10 + Math.random() * 80) + "%";
+    rayo.style.top = (8 + Math.random() * 55) + "%";
+
+    rayosMenu.appendChild(rayo);
+
+    setTimeout(function() {
+        rayo.remove();
+    }, 400);
 }
+
+setInterval(function() {
+    if (Math.random() > 0.20) {
+        crearRayo();
+    }
+}, 900);
 </script>
 <script>
 const lluviaHero = document.querySelector(".lluvia-hero");
