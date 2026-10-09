@@ -332,7 +332,7 @@ font-family: "Playfair Display", serif;    font-size: 43px;
 
 .contacto {
     background: #f7f3ed;
-    padding: 90px 25px 100px;
+    padding: 90px 25px 35px;
     color: #171717;
 }
 
@@ -771,6 +771,50 @@ font-weight: 300;
     visibility: visible;
 }
 
+/* Cierre recto hacia la esquina de la cruz */
+
+
+
+.galeria-overlay.cerrando {
+    clip-path: polygon(
+        0 0,
+        0 0,
+        0 0,
+        0 0,
+        100% 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        clip-path 0.65s cubic-bezier(0.65, 0, 0.35, 1),
+        opacity 0.65s ease;
+}
+
+
+
+
+
+/* Cierre de galería hacia la cruz */
+
+.galeria-overlay.cerrando {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        clip-path 0.65s cubic-bezier(0.65, 0, 0.35, 1),
+        opacity 0.65s ease;
+}
+
+
+
+
+.galeria-overlay {
+    clip-path: inset(0);
+    transition:
+        clip-path 0.65s cubic-bezier(0.65, 0, 0.35, 1),
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
 
 
 .galeria-overlay::before {
@@ -848,7 +892,7 @@ padding-top: 0;
 
 .pagina-atras {
     z-index: 1;
-    visibility: visible;
+    visibility: hidden;
 }
 
 .pagina-frente {
@@ -1242,7 +1286,94 @@ height: 50px;
 }
 
 
+/* PIE DE PÁGINA */
+.pie-pagina {
+    background: #f7f3ed;
+    color: #777067;
+    padding: 22px 25px 24px;
+    font-family: Arial, sans-serif;
+}
+
+.pie-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(23, 23, 23, 0.15);
+}
+
+.pie-marca {
+    color: #171717;
+    font-size: 10px;
+    letter-spacing: 3px;
+}
+
+.volver-arriba {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: #171717;
+    border: 1px solid rgba(23, 23, 23, 0.25);
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.volver-arriba:hover {
+    background: #171717;
+    color: #f7f3ed;
+}
+
+.pie-inferior {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 14px;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+.pie-inferior {
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+@media (max-width: 480px) {
+    .pie-inferior {
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+}
+
+
+
+
+.pie-firma {
+    
+font-family: "Alex Brush", cursive;
+
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: #171717;
+    line-height: 1;
+}
+
+@media (max-width: 480px) {
+    .pie-firma {
+        font-size: 28px;
+    }
+}
+
+
+
 </style>
+
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap" rel="stylesheet">
+
+
+
 </head>
 
 <body>
@@ -1430,6 +1561,19 @@ height: 50px;
     </div>
 
 </section>
+
+<footer class="pie-pagina">
+    <div class="pie-superior">
+        <span class="pie-marca pie-firma">Franco Ziella</span>
+        <a href="#" class="volver-arriba" aria-label="Volver al inicio">↑</a>
+    </div>
+
+    <div class="pie-inferior">
+        <span>BALCARCE · BUENOS AIRES</span>
+        <span>© 2026</span>
+    </div>
+</footer>
+
 <script>
 const menuButton = document.querySelector(".menu");
 const menuOverlay = document.getElementById("menuOverlay");
@@ -1509,15 +1653,11 @@ menuLinks.forEach(function(link) {
     "Futbol/JON09945.jpg"
 ];
 const fotosCasamiento = [
-    "Casamiento/CASAMIENTO01.jpg.jfif",
-    "Casamiento/CASAMIENTO02.jpg.jfif",
-    "Casamiento/CASAMIENTO03.jpg.jfif",
-    "Casamiento/CASAMIENTO04.jpg.jfif",
-    "Casamiento/CASAMIENTO05.jpg.jfif",
-    "Casamiento/CASAMIENTO06.jpg.jfif",
-    "Casamiento/CASAMIENTO07.jpg.jfif",
-    "Casamiento/CASAMIENTO08.jpg.jfif"
-    
+    "casamiento/IMG_5200.JPG.jpeg",
+    "casamiento/IMG_5203.JPG.jpeg",
+    "casamiento/IMG_5209.JPG.jpeg",
+    "casamiento/IMG_5211.JPG.jpeg",
+    "casamiento/IMG_5214.JPG.jpeg"
 ];
 
 const galeriaFutbol = document.getElementById("galeriaFutbol");
@@ -1566,55 +1706,59 @@ let indiceCasamiento = 0;
 
 function mostrarFotoCasamiento(direccion = null) {
     if (!direccion) {
-        fotoCasamiento.src = fotosCasamiento[indiceCasamiento];
+        fotoCasamiento.style.transition = "none";
         fotoCasamiento.style.opacity = "1";
         fotoCasamiento.style.transform = "translateX(0)";
-        fotoCasamientoAtras.style.opacity = "0";
+        fotoCasamiento.src = fotosCasamiento[indiceCasamiento];
         return;
     }
 
     const desplazamiento = direccion === "derecha" ? 28 : -28;
 
-    fotoCasamientoAtras.src = fotosCasamiento[indiceCasamiento];
-    fotoCasamientoAtras.style.transition = "none";
-    fotoCasamientoAtras.style.transform = `translateX(${-desplazamiento}px)`;
-    fotoCasamientoAtras.style.opacity = "0";
-
     fotoCasamiento.style.transition = "opacity 0.42s ease, transform 0.42s ease";
     fotoCasamiento.style.opacity = "0";
     fotoCasamiento.style.transform = `translateX(${desplazamiento}px)`;
 
-    fotoCasamientoAtras.offsetWidth;
-
-    requestAnimationFrame(function() {
-        fotoCasamientoAtras.style.transition = "opacity 0.42s ease, transform 0.42s ease";
-        fotoCasamientoAtras.style.opacity = "1";
-        fotoCasamientoAtras.style.transform = "translateX(0)";
-    });
-
     setTimeout(function() {
         fotoCasamiento.src = fotosCasamiento[indiceCasamiento];
-        fotoCasamiento.style.transition = "none";
-        fotoCasamiento.style.opacity = "1";
-        fotoCasamiento.style.transform = "translateX(0)";
-        fotoCasamientoAtras.style.transition = "none";
-        fotoCasamientoAtras.style.opacity = "0";
-    }, 420);
 
+        fotoCasamiento.style.transition = "none";
+        fotoCasamiento.style.transform = `translateX(${-desplazamiento}px)`;
+
+        fotoCasamiento.style.opacity = "0";
+void fotoCasamiento.offsetWidth;
+
+        requestAnimationFrame(function() {
+            fotoCasamiento.style.transition = "opacity 0.42s ease, transform 0.42s ease";
+            fotoCasamiento.style.opacity = "1";
+            fotoCasamiento.style.transform = "translateX(0)";
+        });
+    }, 420);
 }
+
 
 
 abrirCasamiento.addEventListener("click", function() {
     indiceCasamiento = 0;
     mostrarFotoCasamiento();
+
+    window.scrollTo(0, 0);
+
     galeriaCasamiento.classList.add("active");
     document.body.style.overflow = "hidden";
 });
 
+
+
 cerrarCasamiento.addEventListener("click", function() {
-    galeriaCasamiento.classList.remove("active");
-    document.body.style.overflow = "";
+    galeriaCasamiento.classList.add("cerrando");
+
+    setTimeout(function() {
+        galeriaCasamiento.classList.remove("active", "cerrando");
+        document.body.style.overflow = "";
+    }, 650);
 });
+
 
 siguienteCasamiento.addEventListener("click", function() {
     indiceCasamiento++;
