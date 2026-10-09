@@ -848,7 +848,7 @@ padding-top: 0;
 
 .pagina-atras {
     z-index: 1;
-    visibility: hidden;
+    visibility: visible;
 }
 
 .pagina-frente {
@@ -1600,36 +1600,7 @@ function mostrarFotoCasamiento(direccion = null) {
         fotoCasamientoAtras.style.transition = "none";
         fotoCasamientoAtras.style.opacity = "0";
     }, 420);
-}function mostrarFotoCasamiento(direccion = null) {
-    if (!direccion) {
-        fotoCasamiento.style.transition = "none";
-        fotoCasamiento.style.opacity = "1";
-        fotoCasamiento.style.transform = "translateX(0)";
-        fotoCasamiento.src = fotosCasamiento[indiceCasamiento];
-        return;
-    }
 
-    const desplazamiento = direccion === "derecha" ? 28 : -28;
-
-    fotoCasamiento.style.transition = "opacity 0.42s ease, transform 0.42s ease";
-    fotoCasamiento.style.opacity = "0";
-    fotoCasamiento.style.transform = `translateX(${desplazamiento}px)`;
-
-    setTimeout(function() {
-        fotoCasamiento.src = fotosCasamiento[indiceCasamiento];
-
-        fotoCasamiento.style.transition = "none";
-        fotoCasamiento.style.transform = `translateX(${-desplazamiento}px)`;
-
-        fotoCasamiento.style.opacity = "0";
-void fotoCasamiento.offsetWidth;
-
-        requestAnimationFrame(function() {
-            fotoCasamiento.style.transition = "opacity 0.42s ease, transform 0.42s ease";
-            fotoCasamiento.style.opacity = "1";
-            fotoCasamiento.style.transform = "translateX(0)";
-        });
-    }, 420);
 }
 
 
