@@ -863,31 +863,6 @@ padding-top: 0;
 
 .pagina-frente.pasar-pagina-derecha {
     animation: abrirPaginaDerecha 0.8s ease-in-out forwards;
-}/* Carrusel sutil para la galería de casamientos */
-#fotoCasamiento {
-    transition:
-        opacity 0.42s ease-in-out,
-        transform 0.42s ease-in-out;
-}
-
-#fotoCasamiento.saliendo-derecha {
-    opacity: 0;
-    transform: translateX(24px);
-}
-
-#fotoCasamiento.saliendo-izquierda {
-    opacity: 0;
-    transform: translateX(-24px);
-}
-
-#fotoCasamiento.entrando-derecha {
-    opacity: 0;
-    transform: translateX(24px);
-}
-
-#fotoCasamiento.entrando-izquierda {
-    opacity: 0;
-    transform: translateX(-24px);
 }
 
 @keyframes abrirPaginaIzquierda {
@@ -1578,8 +1553,7 @@ siguienteFutbol.addEventListener("click", function() {
     }
 
     mostrarFotoFutbol();
-}); ```js
-const galeriaCasamiento = document.getElementById("galeriaCasamiento");
+}); const galeriaCasamiento = document.getElementById("galeriaCasamiento");
 const fotoCasamiento = document.getElementById("fotoCasamiento");
 const fotoCasamientoAtras = document.getElementById("fotoCasamientoAtras");
 const abrirCasamiento = document.querySelector(".category.casamientos span");
@@ -1588,59 +1562,76 @@ const anteriorCasamiento = document.getElementById("anteriorCasamiento");
 const siguienteCasamiento = document.getElementById("siguienteCasamiento");
 
 let indiceCasamiento = 0;
-let cambiandoFotoCasamiento = false;
+
 
 function mostrarFotoCasamiento(direccion = null) {
     if (!direccion) {
-        fotoCasamiento.classList.remove(
-            "saliendo-derecha",
-            "saliendo-izquierda",
-            "entrando-derecha",
-            "entrando-izquierda"
-        );
+        fotoCasamiento.src = fotosCasamiento[indiceCasamiento];
+        fotoCasamiento.style.opacity = "1";
+        fotoCasamiento.style.transform = "translateX(0)";
+        fotoCasamientoAtras.style.opacity = "0";
+        return;
+    }
+
+    const desplazamiento = direccion === "derecha" ? 28 : -28;
+
+    fotoCasamientoAtras.src = fotosCasamiento[indiceCasamiento];
+    fotoCasamientoAtras.style.transition = "none";
+    fotoCasamientoAtras.style.transform = `translateX(${-desplazamiento}px)`;
+    fotoCasamientoAtras.style.opacity = "0";
+
+    fotoCasamiento.style.transition = "opacity 0.42s ease, transform 0.42s ease";
+    fotoCasamiento.style.opacity = "0";
+    fotoCasamiento.style.transform = `translateX(${desplazamiento}px)`;
+
+    fotoCasamientoAtras.offsetWidth;
+
+    requestAnimationFrame(function() {
+        fotoCasamientoAtras.style.transition = "opacity 0.42s ease, transform 0.42s ease";
+        fotoCasamientoAtras.style.opacity = "1";
+        fotoCasamientoAtras.style.transform = "translateX(0)";
+    });
+
+    setTimeout(function() {
+        fotoCasamiento.src = fotosCasamiento[indiceCasamiento];
+        fotoCasamiento.style.transition = "none";
+        fotoCasamiento.style.opacity = "1";
+        fotoCasamiento.style.transform = "translateX(0)";
+        fotoCasamientoAtras.style.transition = "none";
+        fotoCasamientoAtras.style.opacity = "0";
+    }, 420);
+}function mostrarFotoCasamiento(direccion = null) {
+    if (!direccion) {
+        fotoCasamiento.style.transition = "none";
         fotoCasamiento.style.opacity = "1";
         fotoCasamiento.style.transform = "translateX(0)";
         fotoCasamiento.src = fotosCasamiento[indiceCasamiento];
         return;
     }
 
-    if (cambiandoFotoCasamiento) return;
-    cambiandoFotoCasamiento = true;
+    const desplazamiento = direccion === "derecha" ? 28 : -28;
 
-    const claseSalida = direccion === "derecha"
-        ? "saliendo-derecha"
-        : "saliendo-izquierda";
-
-    const claseEntrada = direccion === "derecha"
-        ? "entrando-izquierda"
-        : "entrando-derecha";
-
-    fotoCasamiento.classList.remove(
-        "saliendo-derecha",
-        "saliendo-izquierda",
-        "entrando-derecha",
-        "entrando-izquierda"
-    );
-
-    fotoCasamiento.classList.add(claseSalida);
+    fotoCasamiento.style.transition = "opacity 0.42s ease, transform 0.42s ease";
+    fotoCasamiento.style.opacity = "0";
+    fotoCasamiento.style.transform = `translateX(${desplazamiento}px)`;
 
     setTimeout(function() {
         fotoCasamiento.src = fotosCasamiento[indiceCasamiento];
 
-        fotoCasamiento.classList.remove(claseSalida);
-        fotoCasamiento.classList.add(claseEntrada);
+        fotoCasamiento.style.transition = "none";
+        fotoCasamiento.style.transform = `translateX(${-desplazamiento}px)`;
 
-        void fotoCasamiento.offsetWidth;
+        fotoCasamiento.style.opacity = "0";
+void fotoCasamiento.offsetWidth;
 
         requestAnimationFrame(function() {
-            fotoCasamiento.classList.remove(claseEntrada);
-
-            setTimeout(function() {
-                cambiandoFotoCasamiento = false;
-            }, 450);
+            fotoCasamiento.style.transition = "opacity 0.42s ease, transform 0.42s ease";
+            fotoCasamiento.style.opacity = "1";
+            fotoCasamiento.style.transform = "translateX(0)";
         });
     }, 420);
 }
+
 
 abrirCasamiento.addEventListener("click", function() {
     indiceCasamiento = 0;
@@ -1655,8 +1646,6 @@ cerrarCasamiento.addEventListener("click", function() {
 });
 
 siguienteCasamiento.addEventListener("click", function() {
-    if (cambiandoFotoCasamiento) return;
-
     indiceCasamiento++;
 
     if (indiceCasamiento >= fotosCasamiento.length) {
@@ -1667,8 +1656,6 @@ siguienteCasamiento.addEventListener("click", function() {
 });
 
 anteriorCasamiento.addEventListener("click", function() {
-    if (cambiandoFotoCasamiento) return;
-
     indiceCasamiento--;
 
     if (indiceCasamiento < 0) {
@@ -1677,7 +1664,6 @@ anteriorCasamiento.addEventListener("click", function() {
 
     mostrarFotoCasamiento("izquierda");
 });
-```
 
 anteriorFutbol.addEventListener("click", function() {
     indiceFutbol--;
