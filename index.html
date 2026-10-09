@@ -686,14 +686,14 @@ font-weight: 300;
 }
 .galeria-overlay {
    position: fixed;
+   transform: none !important;
 top: 0 !important;
 left: 0 !important;
 width: 100vw !important;
 height: 100vh !important;
 bottom: 0 !important;
 min-height: 100dvh !important;
-    background: #171717;
-    background: #171717;
+    background: #303C40;
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -703,6 +703,11 @@ min-height: 100dvh !important;
     transition: opacity 0.3s ease, visibility 0.3s ease;
     right: 0 !important;
     overflow: hidden;
+    background-image:
+    linear-gradient(
+        rgba(48, 60, 64, 0.78),
+        rgba(48, 60, 64, 0.88)
+    );
 }
 
 .galeria-overlay.active {
@@ -710,20 +715,42 @@ min-height: 100dvh !important;
     visibility: visible;
 }
 
-.galeria-overlay.active {
-    opacity: 1;
-    visibility: visible;
+.galeria-overlay::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    background:
+        linear-gradient(
+            rgba(48, 60, 64, 0.72),
+            rgba(48, 60, 64, 0.82)
+        ),
+        url("https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1600&q=85")
+        center / 100% 100% no-repeat;
+    filter: blur(0.5px);
+    transform: scale(1);
+    opacity: 0.75;
+    pointer-events: none;
+
 }
 
 
 .galeria-contenido {
     width: 100%;
     height: 100%;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     perspective: 1800px;
     position: relative;
+}
+
+#fotoFutbol {
+    display: block;
+    width: 98vw;
+    height: 96vh;
+    object-fit: contain;
 }
 
 .album-contenido {
@@ -1108,6 +1135,35 @@ height: 50px;
         opacity: 0;
     }
 }
+/* Cortina elegante para entrar al portfolio */
+
+/* Cortina elegante para entrar al portfolio */
+.cortina-portfolio {
+    position: fixed;
+    inset: 0;
+    background: #f7f3ed;
+    z-index: 10000;
+    transform: translateY(100%);
+    pointer-events: none;
+}
+
+.cortina-portfolio.animando {
+    animation: cortinaPortfolio 0.9s ease-in-out forwards;
+}
+
+@keyframes cortinaPortfolio {
+    0% {
+        transform: translateY(100%);
+    }
+    45% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+
 </style>
 </head>
 
@@ -1133,6 +1189,9 @@ height: 50px;
 <a href="#contacto">CONTACTO</a>
 </nav>
 <div class="flash-camara" id="flashCamara"></div>
+
+<div class="cortina-portfolio" id="cortinaPortfolio"></div>
+
 
 
     <section class="hero">
@@ -1296,23 +1355,56 @@ menuClose.addEventListener("click", function() {
 
 const flashCamara = document.getElementById("flashCamara");
 
+
 menuLinks.forEach(function(link) {
-    link.addEventListener("click", function() {
+    link.addEventListener("click", function(event) {
         menuOverlay.classList.remove("active");
-const sobreFranco = document.getElementById("sobre-franco");
 
-const posicion = sobreFranco.getBoundingClientRect().top + window.scrollY;
+        if (link.getAttribute("href") === "#trabajos") {
+            event.preventDefault();
 
-window.scrollTo({
-    top: posicion,
-    behavior: "smooth"
-});
+            const cortinaPortfolio = document.getElementById("cortinaPortfolio");
+            const trabajos = document.getElementById("trabajos");
 
-flashCamara.classList.remove("disparar");
-void flashCamara.offsetWidth;
-flashCamara.classList.add("disparar");
+            cortinaPortfolio.classList.remove("animando");
+            void cortinaPortfolio.offsetWidth;
+            cortinaPortfolio.classList.add("animando");
+
+            setTimeout(function() {
+                const posicion = trabajos.getBoundingClientRect().top + window.scrollY;
+
+                window.scrollTo({
+                    top: posicion,
+                    behavior: "instant"
+                });
+            }, 400);
+
+            setTimeout(function() {
+                cortinaPortfolio.classList.remove("animando");
+            }, 900);
+
+        } else {
+            const destino = document.querySelector(link.getAttribute("href"));
+
+            if (destino) {
+                const posicion = destino.getBoundingClientRect().top + window.scrollY;
+
+                window.scrollTo({
+                    top: posicion,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+        flashCamara.classList.remove("disparar");
+        void flashCamara.offsetWidth;
+        flashCamara.classList.add("disparar");
     });
 });
+
+
+
+
 ;const fotosFutbol = [
     "Futbol/JON00038.jpg",
     "Futbol/JON00096.jpg",
@@ -1355,10 +1447,12 @@ abrirFutbol.addEventListener("click", function() {
     indiceFutbol = 0;
     mostrarFotoFutbol();
     galeriaFutbol.classList.add("active");
+    document.body.style.overflow = "hidden";
 });
 
 cerrarFutbol.addEventListener("click", function() {
     galeriaFutbol.classList.remove("active");
+    document.body.style.overflow = "";
 });
 
 siguienteFutbol.addEventListener("click", function() {
@@ -1397,10 +1491,12 @@ abrirCasamiento.addEventListener("click", function() {
     indiceCasamiento = 0;
     mostrarFotoCasamiento();
     galeriaCasamiento.classList.add("active");
+    document.body.style.overflow = "hidden";
 });
 
 cerrarCasamiento.addEventListener("click", function() {
     galeriaCasamiento.classList.remove("active");
+    document.body.style.overflow = "";
 });
 
 siguienteCasamiento.addEventListener("click", function() {
