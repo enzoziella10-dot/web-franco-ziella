@@ -794,6 +794,17 @@ font-weight: 300;
     object-position: center;
 }
 
+/* Ajuste exclusivo para la galería de Bautismos */
+
+
+
+
+
+
+
+
+
+
 /* Cierre recto hacia la esquina de la cruz */
 
 
@@ -884,17 +895,39 @@ font-weight: 300;
 #fotoFutbol,
 #fotoQuince {
     display: block;
-    width: 90vw;
-    height: 78vh;
+    width: 96vw;
+height: 86vh;
     max-width: 100%;
     object-fit: contain;
     object-position: center;
+}
+#galeriaFutbol #fotoFutbol {
+    width: 96vw;
+    height: 82vh;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center;
+    transform: translateY(15px);
 }
 
 .album-contenido {
     position: relative;
     width: 100%;
     height: 100%;
+}
+#galeriaBautismo .galeria-contenido {
+    position: absolute;
+    top: 90px;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .pagina-album {
@@ -1542,6 +1575,37 @@ font-size: 22px;
 <button class="galeria-siguiente" id="siguienteQuince">›</button>
 
 </div>
+<div class="galeria-overlay" id="galeriaBautismo">
+
+    <div class="galeria-encabezado">
+        <button class="galeria-cerrar" id="cerrarBautismo">×</button>
+
+        <div class="galeria-marca">
+            <span>FRANCO ZIELLA</span>
+            <small>G A L E R Í A</small>
+        </div>
+
+        <span class="galeria-espacio"></span>
+    </div>
+
+    <button class="galeria-anterior" id="anteriorBautismo">‹</button>
+
+    <div class="galeria-contenido album-contenido">
+
+        <div class="pagina-album pagina-atras">
+            <img id="fotoBautismoAtras" src="" alt="">
+        </div>
+
+        <div class="pagina-album pagina-frente">
+            <img id="fotoBautismo" src="" alt="Fotografía de bautismo">
+        </div>
+
+    </div>
+
+    <button class="galeria-siguiente" id="siguienteBautismo">›</button>
+
+</div>
+
 <div class="galeria-overlay" id="galeriaCasamiento">
     
     <div class="galeria-encabezado">
@@ -1746,6 +1810,14 @@ const anteriorFutbol = document.getElementById("anteriorFutbol");
 const siguienteFutbol = document.getElementById("siguienteFutbol");
 
 let indiceFutbol = 0; const galeriaQuince = document.getElementById("galeriaQuince");
+const galeriaBautismo = document.getElementById("galeriaBautismo");
+const fotoBautismo = document.getElementById("fotoBautismo");
+const abrirBautismo = document.querySelector(".category.bautismos");
+const cerrarBautismo = document.getElementById("cerrarBautismo");
+const anteriorBautismo = document.getElementById("anteriorBautismo");
+const siguienteBautismo = document.getElementById("siguienteBautismo");
+
+let indiceBautismo = 0;
 const fotoQuince = document.getElementById("fotoQuince");
 const abrirQuince = document.querySelector(".quince");
 const cerrarQuince = document.getElementById("cerrarQuince");
@@ -1762,11 +1834,129 @@ const fotosQuince = [
     "cumple15/cumple15-06.jfif"
 ];
 
-function mostrarFotoFutbol() {
-    fotoFutbol.src = fotosFutbol[indiceFutbol];
+
+
+const fotosBautismo = [
+    "bautismo/IMG_5311.JPG.jpeg",
+    "bautismo/IMG_5330.JPG.jpeg",
+    "bautismo/IMG_5331.JPG.jpeg",
+    "bautismo/IMG_5332.JPG.jpeg",
+    "bautismo/IMG_5333.JPG.jpeg",
+    "bautismo/IMG_5334.JPG.jpeg",
+    "bautismo/IMG_5335.JPG.jpeg"
+];
+
+
+
+
+function mostrarFotoFutbol(direccion = null) {
+    if (!direccion) {
+        fotoFutbol.style.transition = "none";
+        fotoFutbol.style.opacity = "1";
+        fotoFutbol.style.transform = "translateX(0)";
+        fotoFutbol.src = fotosFutbol[indiceFutbol];
+        return;
+    }
+
+    const desplazamiento = direccion === "derecha" ? 28 : -28;
+    const siguienteFoto = new Image();
+    siguienteFoto.src = fotosFutbol[indiceFutbol];
+
+    siguienteFoto.onload = function() {
+        fotoFutbol.style.transition = "opacity 0.42s ease, transform 0.42s ease";
+        fotoFutbol.style.opacity = "0";
+        fotoFutbol.style.transform = `translateX(${desplazamiento}px)`;
+
+        setTimeout(function() {
+            fotoFutbol.style.transition = "none";
+            fotoFutbol.src = siguienteFoto.src;
+            fotoFutbol.style.transform = `translateX(${-desplazamiento}px)`;
+            fotoFutbol.style.opacity = "0";
+
+            void fotoFutbol.offsetWidth;
+
+            requestAnimationFrame(function() {
+                fotoFutbol.style.transition = "opacity 0.42s ease, transform 0.42s ease";
+                fotoFutbol.style.opacity = "1";
+                fotoFutbol.style.transform = "translateX(0)";
+            });
+        }, 420);
+    };
+
+    siguienteFoto.onerror = function() {
+        console.error("No se pudo cargar la foto:", fotosFutbol[indiceFutbol]);
+    };
+
 }function mostrarFotoQuince() {
     fotoQuince.src = fotosQuince[indiceQuince];
+
+function mostrarFotoBautismo(direccion = null) {
+    if (!direccion) {
+        fotoBautismo.style.transition = "none";
+        fotoBautismo.style.opacity = "1";
+        fotoBautismo.style.transform = "translateX(0)";
+        fotoBautismo.src = fotosBautismo[indiceBautismo];
+        return;
+    }
+
+    const desplazamiento = direccion === "derecha" ? 28 : -28;
+    const siguienteFoto = new Image();
+    siguienteFoto.src = fotosBautismo[indiceBautismo];
+
+    siguienteFoto.onload = function() {
+        fotoBautismo.style.transition = "opacity 0.42s ease, transform 0.42s ease";
+        fotoBautismo.style.opacity = "0";
+        fotoBautismo.style.transform = `translateX(${desplazamiento}px)`;
+
+        setTimeout(function() {
+            fotoBautismo.style.transition = "none";
+            fotoBautismo.src = siguienteFoto.src;
+            fotoBautismo.style.transform = `translateX(${-desplazamiento}px)`;
+            fotoBautismo.style.opacity = "0";
+
+            void fotoBautismo.offsetWidth;
+
+            requestAnimationFrame(function() {
+                fotoBautismo.style.transition = "opacity 0.42s ease, transform 0.42s ease";
+                fotoBautismo.style.opacity = "1";
+                fotoBautismo.style.transform = "translateX(0)";
+            });
+        }, 420);
+    };
+
+    siguienteFoto.onerror = function() {
+        console.error("No se pudo cargar la foto:", fotosBautismo[indiceBautismo]);
+    };
 }
+
+
+abrirBautismo.addEventListener("click", function() {
+    indiceBautismo = 0;
+    mostrarFotoBautismo();
+    galeriaBautismo.classList.add("active");
+    document.body.style.overflow = "hidden";
+});
+
+cerrarBautismo.addEventListener("click", function() {
+    galeriaBautismo.classList.remove("active");
+    document.body.style.overflow = "";
+});
+
+anteriorBautismo.addEventListener("click", function() {
+    indiceBautismo--;
+    if (indiceBautismo < 0) {
+        indiceBautismo = fotosBautismo.length - 1;
+    }
+    mostrarFotoBautismo("izquierda");
+});
+
+siguienteBautismo.addEventListener("click", function() {
+    indiceBautismo++;
+    if (indiceBautismo >= fotosBautismo.length) {
+        indiceBautismo = 0;
+    }
+    mostrarFotoBautismo("derecha");
+});
 
 abrirQuince.addEventListener("click", function() {
     indiceQuince = 0;
@@ -1818,7 +2008,7 @@ siguienteFutbol.addEventListener("click", function() {
         indiceFutbol = 0;
     }
 
-    mostrarFotoFutbol();
+    mostrarFotoFutbol("derecha");
 }); const galeriaCasamiento = document.getElementById("galeriaCasamiento");
 const fotoCasamiento = document.getElementById("fotoCasamiento");
 const fotoCasamientoAtras = document.getElementById("fotoCasamientoAtras");
@@ -1828,6 +2018,7 @@ const anteriorCasamiento = document.getElementById("anteriorCasamiento");
 const siguienteCasamiento = document.getElementById("siguienteCasamiento");
 
 let indiceCasamiento = 0;
+
 
 
 function mostrarFotoCasamiento(direccion = null) {
@@ -1840,27 +2031,35 @@ function mostrarFotoCasamiento(direccion = null) {
     }
 
     const desplazamiento = direccion === "derecha" ? 28 : -28;
+    const siguienteFoto = new Image();
+    siguienteFoto.src = fotosCasamiento[indiceCasamiento];
 
-    fotoCasamiento.style.transition = "opacity 0.42s ease, transform 0.42s ease";
-    fotoCasamiento.style.opacity = "0";
-    fotoCasamiento.style.transform = `translateX(${desplazamiento}px)`;
-
-    setTimeout(function() {
-        fotoCasamiento.src = fotosCasamiento[indiceCasamiento];
-
-        fotoCasamiento.style.transition = "none";
-        fotoCasamiento.style.transform = `translateX(${-desplazamiento}px)`;
-
+    siguienteFoto.onload = function() {
+        fotoCasamiento.style.transition = "opacity 0.42s ease, transform 0.42s ease";
         fotoCasamiento.style.opacity = "0";
-void fotoCasamiento.offsetWidth;
+        fotoCasamiento.style.transform = `translateX(${desplazamiento}px)`;
 
-        requestAnimationFrame(function() {
-            fotoCasamiento.style.transition = "opacity 0.42s ease, transform 0.42s ease";
-            fotoCasamiento.style.opacity = "1";
-            fotoCasamiento.style.transform = "translateX(0)";
-        });
-    }, 420);
+        setTimeout(function() {
+            fotoCasamiento.style.transition = "none";
+            fotoCasamiento.src = siguienteFoto.src;
+            fotoCasamiento.style.transform = `translateX(${-desplazamiento}px)`;
+            fotoCasamiento.style.opacity = "0";
+
+            void fotoCasamiento.offsetWidth;
+
+            requestAnimationFrame(function() {
+                fotoCasamiento.style.transition = "opacity 0.42s ease, transform 0.42s ease";
+                fotoCasamiento.style.opacity = "1";
+                fotoCasamiento.style.transform = "translateX(0)";
+            });
+        }, 420);
+    };
+
+    siguienteFoto.onerror = function() {
+        console.error("No se pudo cargar la foto:", fotosCasamiento[indiceCasamiento]);
+    };
 }
+
 
 
 
@@ -1913,7 +2112,7 @@ anteriorFutbol.addEventListener("click", function() {
         indiceFutbol = fotosFutbol.length - 1;
     }
 
-    mostrarFotoFutbol();
+    mostrarFotoFutbol("izquierda");
 });document.querySelector('.button[href="#trabajos"]').addEventListener("click", function(e) {
     e.preventDefault();
 
@@ -1984,11 +2183,7 @@ const movimiento = progreso * -90;
 
 window.addEventListener("scroll", moverFoto);
 moverFoto();
-</script>
-<script>
 
-
-</script>
 <script>
 const lluviaMenu = document.querySelector(".lluvia-menu");
 
