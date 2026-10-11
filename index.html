@@ -1473,9 +1473,20 @@ font-size: 22px;
 </div>
 
     </section>
-    <div class="galeria-overlay" id="galeriaFutbol">
+    
+<div class="galeria-overlay" id="galeriaFutbol">
 
-    <button class="galeria-cerrar" id="cerrarFutbol">×</button>
+    <div class="galeria-encabezado">
+        <button class="galeria-cerrar" id="cerrarFutbol">×</button>
+
+        <div class="galeria-marca">
+            <span>FRANCO ZIELLA</span>
+            <small>G A L E R Í A</small>
+        </div>
+
+        <span class="galeria-espacio"></span>
+    </div>
+
 
     <button class="galeria-anterior" id="anteriorFutbol">‹</button>
 
@@ -1484,6 +1495,23 @@ font-size: 22px;
     </div>
 
     <button class="galeria-siguiente" id="siguienteFutbol">›</button>
+
+</div><div class="galeria-overlay" id="galeriaQuince">
+
+    <div class="galeria-encabezado">
+        <button class="galeria-cerrar" id="cerrarQuince">×</button>
+
+        <div class="galeria-marca">
+            <span>FRANCO ZIELLA</span>
+            <small>G A L E R Í A</small>
+        </div>
+
+        <span class="galeria-espacio"></span>
+    </div>
+
+    <div class="galeria-contenido">
+        <img id="fotoQuince" src="" alt="Fotografía de 15 años">
+    </div>
 
 </div>
 <div class="galeria-overlay" id="galeriaCasamiento">
@@ -1663,17 +1691,16 @@ if (destino) {
 
 
 ;const fotosFutbol = [
-    "Futbol/JON00038.jpg",
-    "Futbol/JON00096.jpg",
-    "Futbol/JON00136.jpg",
-    "Futbol/JON00181.jpg",
-    "Futbol/JON00426.jpg",
-    "Futbol/JON00484.jpg",
-    "Futbol/JON09144.jpg",
-    "Futbol/JON09221.jpg",
-    "Futbol/JON09249.jpg",
-    "Futbol/JON09518.jpg",
-    "Futbol/JON09945.jpg"
+    "Futbol/IMG_5231.JPG.jpeg",
+    "Futbol/IMG_5232.JPEG",
+    "Futbol/IMG_5237.JPEG",
+    "Futbol/IMG_5239.JPEG",
+    "Futbol/IMG_5247.JPG.jpeg",
+    "Futbol/IMG_5257.JPG.jpeg",
+    "Futbol/IMG_5258.JPG.jpeg",
+    "Futbol/IMG_5264.JPG.jpeg",
+    "Futbol/IMG_5265.JPG.jpeg",
+    "Futbol/IMG_5268.JPG.jpeg"
 ];
 const fotosCasamiento = [
     "casamiento/IMG_5200.JPG.jpeg",
@@ -1690,11 +1717,38 @@ const cerrarFutbol = document.getElementById("cerrarFutbol");
 const anteriorFutbol = document.getElementById("anteriorFutbol");
 const siguienteFutbol = document.getElementById("siguienteFutbol");
 
-let indiceFutbol = 0;
+let indiceFutbol = 0; const galeriaQuince = document.getElementById("galeriaQuince");
+const fotoQuince = document.getElementById("fotoQuince");
+const abrirQuince = document.querySelector(".quince");
+const cerrarQuince = document.getElementById("cerrarQuince");
+
+let indiceQuince = 0;
+const fotosQuince = [
+    "cumple15/cumple15-01.jfif",
+    "cumple15/cumple15-02.jfif",
+    "cumple15/cumple15-03.jfif",
+    "cumple15/cumple15-04.jfif",
+    "cumple15/cumple15-05.jfif",
+    "cumple15/cumple15-06.jfif"
+];
 
 function mostrarFotoFutbol() {
     fotoFutbol.src = fotosFutbol[indiceFutbol];
+}function mostrarFotoQuince() {
+    fotoQuince.src = fotosQuince[indiceQuince];
 }
+
+abrirQuince.addEventListener("click", function() {
+    indiceQuince = 0;
+    mostrarFotoQuince();
+    galeriaQuince.classList.add("active");
+    document.body.style.overflow = "hidden";
+});
+
+cerrarQuince.addEventListener("click", function() {
+    galeriaQuince.classList.remove("active");
+    document.body.style.overflow = "";
+});
 
 abrirFutbol.addEventListener("click", function() {
     indiceFutbol = 0;
@@ -1946,23 +2000,32 @@ for (let i = 0; i < 120; i++) {
 }
 </script>
 <script>
+
 const enlacesMenu = document.querySelectorAll(".menu-overlay a");
 
 enlacesMenu.forEach(function(enlace) {
 
-    enlace.addEventListener("mouseenter", function() {
-        enlace.style.color = "red";
+    function activarEfecto() {
+        enlace.style.color = "#f7f3ed";
         enlace.style.scale = "1.08";
         enlace.style.marginLeft = "10px";
-    });
+    }
 
-    enlace.addEventListener("mouseleave", function() {
+    function quitarEfecto() {
         enlace.style.color = "white";
         enlace.style.scale = "1";
         enlace.style.marginLeft = "0";
-    });
+    }
 
+    enlace.addEventListener("mouseenter", activarEfecto);
+    enlace.addEventListener("mouseleave", quitarEfecto);
+
+    enlace.addEventListener("touchstart", activarEfecto, { passive: true });
+    enlace.addEventListener("touchend", quitarEfecto);
+    enlace.addEventListener("touchcancel", quitarEfecto);
 });
+
+;
 </script>
 </body>
 </html>
