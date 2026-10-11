@@ -771,6 +771,27 @@ font-weight: 300;
 .galeria-overlay.active {
     opacity: 1;
     visibility: visible;
+}/* Ajuste exclusivo para la galería de 15 años */
+#galeriaQuince .galeria-contenido {
+    position: absolute;
+    top: 90px;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#galeriaQuince #fotoQuince {
+    width: 96vw;
+    height: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
 }
 
 /* Cierre recto hacia la esquina de la cruz */
@@ -849,7 +870,7 @@ font-weight: 300;
 .galeria-contenido {
     width: 100%;
     height: calc(100% - 90px);
-padding-top: 0;
+    padding-top: 0;
     margin-top: 0;
     box-sizing: border-box;
     z-index: 1;
@@ -860,11 +881,14 @@ padding-top: 0;
     position: relative;
 }
 
-#fotoFutbol {
+#fotoFutbol,
+#fotoQuince {
     display: block;
-    width: 98vw;
-    height: 96vh;
+    width: 90vw;
+    height: 78vh;
+    max-width: 100%;
     object-fit: contain;
+    object-position: center;
 }
 
 .album-contenido {
@@ -1509,9 +1533,13 @@ font-size: 22px;
         <span class="galeria-espacio"></span>
     </div>
 
-    <div class="galeria-contenido">
-        <img id="fotoQuince" src="" alt="Fotografía de 15 años">
-    </div>
+    <button class="galeria-anterior" id="anteriorQuince">‹</button>
+
+<div class="galeria-contenido">
+    <img id="fotoQuince" src="" alt="Fotografía de 15 años">
+</div>
+
+<button class="galeria-siguiente" id="siguienteQuince">›</button>
 
 </div>
 <div class="galeria-overlay" id="galeriaCasamiento">
@@ -1721,6 +1749,8 @@ let indiceFutbol = 0; const galeriaQuince = document.getElementById("galeriaQuin
 const fotoQuince = document.getElementById("fotoQuince");
 const abrirQuince = document.querySelector(".quince");
 const cerrarQuince = document.getElementById("cerrarQuince");
+const anteriorQuince = document.getElementById("anteriorQuince");
+const siguienteQuince = document.getElementById("siguienteQuince");
 
 let indiceQuince = 0;
 const fotosQuince = [
@@ -1748,6 +1778,25 @@ abrirQuince.addEventListener("click", function() {
 cerrarQuince.addEventListener("click", function() {
     galeriaQuince.classList.remove("active");
     document.body.style.overflow = "";
+});
+anteriorQuince.addEventListener("click", function() {
+    indiceQuince--;
+
+    if (indiceQuince < 0) {
+        indiceQuince = fotosQuince.length - 1;
+    }
+
+    mostrarFotoQuince();
+});
+
+siguienteQuince.addEventListener("click", function() {
+    indiceQuince++;
+
+    if (indiceQuince >= fotosQuince.length) {
+        indiceQuince = 0;
+    }
+
+    mostrarFotoQuince();
 });
 
 abrirFutbol.addEventListener("click", function() {
